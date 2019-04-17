@@ -1,0 +1,308 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red255\green255\blue255;\red180\green0\blue98;\red0\green0\blue0;
+\red77\green0\blue158;\red92\green38\blue153;\red48\green111\blue121;\red68\green137\blue147;\red46\green13\blue110;
+\red32\green60\blue63;\red186\green0\blue17;}
+{\*\expandedcolortbl;;\csgenericrgb\c100000\c100000\c100000;\csgenericrgb\c70682\c0\c38264;\csgenericrgb\c0\c0\c0;
+\csgenericrgb\c30278\c0\c61966;\csgenericrgb\c35900\c14900\c60100;\csgenericrgb\c18769\c43699\c47289;\csgenericrgb\c26518\c53646\c57619;\csgenericrgb\c18100\c5200\c43100;
+\csgenericrgb\c12359\c23384\c24757;\csgenericrgb\c72768\c0\c6662;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww26820\viewh15060\viewkind0
+\deftab692
+\pard\tx692\pardeftab692\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \cb2 \
+\
+
+\f1\fs28 \cf3 import\cf4  UIKit
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf3 import\cf4  CoreData
+\f0\fs24 \cf0 \
+\
+
+\f1\fs28 \cf3 class\cf4  CoreDataServiceManager: \cf5 NSObject\cf4  \{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \cf3 class\cf4  \cf3 func\cf4  getContext() -> \cf5 NSManagedObjectContext\cf4 \{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 let\cf4  appdeleget = \cf5 UIApplication\cf4 .\cf6 shared\cf4 .\cf6 delegate\cf4  \cf3 as\cf4 ! \cf7 AppDelegate
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 return\cf4  appdeleget.\cf8 persistentContainer\cf4 .\cf6 viewContext
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \}
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \cf3 class\cf4  \cf3 func\cf4  storeEmployee(employeeDetail: [\cf6 String\cf4 :\cf3 Any\cf4 ])
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf9 print\cf4 (employeeDetail)
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 let\cf4  context = \cf10 getContext\cf4 ()
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 let\cf4  entity = \cf5 NSEntityDescription\cf4 .\cf9 entity\cf4 (forEntityName: \cf11 "Student"\cf4 , in: context)
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 let\cf4  manageObj = \cf5 NSManagedObject\cf4 (entity: entity!, insertInto: context)
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         manageObj.\cf9 setValuesForKeys\cf4 (employeeDetail)
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf9 print\cf4 (manageObj)
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 do\cf4 \{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4             \cf3 try\cf4  context.\cf9 save\cf4 ()
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4             \cf9 print\cf4 (\cf11 "saved."\cf4 )
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \}\cf3 catch\cf4 \{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4             \cf9 print\cf4 (error.\cf6 localizedDescription\cf4 )
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \}
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \}
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \cf3 class\cf4  \cf3 func\cf4  getEmployees() -> [\cf7 Student\cf4 ]
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 var\cf4  result = [\cf7 Student\cf4 ]()
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 let\cf4  fetchRequest: \cf5 NSFetchRequest\cf4  = \cf7 Student\cf4 .\cf10 fetchRequest\cf4 ()
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 do\cf4 \{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4             result = \cf3 try\cf4  \cf10 getContext\cf4 ().\cf9 fetch\cf4 (fetchRequest)
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \}\cf3 catch\cf4 \{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4             \cf9 print\cf4 (error.\cf6 localizedDescription\cf4 )
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \}
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 return\cf4  result
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \}
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \cf3 class\cf4  \cf3 func\cf4  getEmployeeBy(id: \cf6 String\cf4 ) -> [\cf7 Student\cf4 ]
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 var\cf4  result = [\cf7 Student\cf4 ]()
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 let\cf4  fetchRequest: \cf5 NSFetchRequest\cf4  = \cf7 Student\cf4 .\cf10 fetchRequest\cf4 ()
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 let\cf4  predicate = \cf5 NSPredicate\cf4 (format: \cf11 "s_emailid == %@"\cf4 ,\cf11 "\cf4 \\\cf11 (\cf4 id\cf11 )"\cf4 )
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         fetchRequest.\cf6 predicate\cf4  = predicate
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 do\cf4 \{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4             result = \cf3 try\cf4  \cf10 getContext\cf4 ().\cf9 fetch\cf4 (fetchRequest)
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \}\cf3 catch\cf4 \{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4             \cf9 print\cf4 (error.\cf6 localizedDescription\cf4 )
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \}
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 return\cf4  result
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \}
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \cf3 class\cf4  \cf3 func\cf4  updateEmployee(id: \cf5 NSManagedObjectID\cf4 , dict: [\cf6 String\cf4 :\cf3 Any\cf4 ])\{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 let\cf4  context = \cf10 getContext\cf4 ()
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 let\cf4  sugerToUpdate = \cf10 getById\cf4 (id: id)
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         sugerToUpdate.\cf9 setValuesForKeys\cf4 (dict)
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 do\cf4 \{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4             \cf3 try\cf4  context.\cf9 save\cf4 ()
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4             \cf9 print\cf4 (\cf11 "Update."\cf4 )
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \}\cf3 catch\cf4 \{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4             \cf9 print\cf4 (error.\cf6 localizedDescription\cf4 )
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \}
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \}
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \cf3 class\cf4  \cf3 func\cf4  getById(id: \cf5 NSManagedObjectID\cf4 ) -> \cf5 NSManagedObject\cf4 \{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 let\cf4  context = \cf10 getContext\cf4 ()
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 return\cf4  context.\cf9 object\cf4 (with: id)
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \}
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \cf3 class\cf4  \cf3 func\cf4  deleteEmployee(id: \cf5 NSManagedObjectID\cf4 )\{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 let\cf4  context = \cf10 getContext\cf4 ()
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 let\cf4  sugerToDelete = \cf10 getById\cf4 (id: id)
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         context.\cf9 delete\cf4 (sugerToDelete)
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 do\cf4 \{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4             \cf3 try\cf4  context.\cf9 save\cf4 ()
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4             \cf9 print\cf4 (\cf11 "saved."\cf4 )
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \}\cf3 catch\cf4 \{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4             \cf9 print\cf4 (error.\cf6 localizedDescription\cf4 )
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \}
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \}
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \cf3 class\cf4  \cf3 func\cf4  clearCoreData()
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 let\cf4  fetchRequest:\cf5 NSFetchRequest\cf4 <\cf7 Student\cf4 > = \cf7 Student\cf4 .\cf10 fetchRequest\cf4 ()
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 let\cf4  deleteRequest = \cf5 NSBatchDeleteRequest\cf4 (fetchRequest: fetchRequest \cf3 as\cf4 ! \cf5 NSFetchRequest\cf4 <\cf6 NSFetchRequestResult\cf4 >)
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 do\cf4 \{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4             \cf9 print\cf4 (\cf11 "deleting all elements"\cf4 )
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4             \cf3 try\cf4  \cf10 getContext\cf4 ().\cf9 execute\cf4 (deleteRequest)
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \}
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \cf3 catch
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \{
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4             \cf9 print\cf4 (\cf11 "error in clear data = \cf4 \\\cf11 (\cf4 error.\cf6 localizedDescription\cf11 )"\cf4 )
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4         \}
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4     \}
+\f0\fs24 \cf0 \
+
+\f1\fs28 \cf4 \}
+\f0\fs24 \cf0 \
+\
+}
