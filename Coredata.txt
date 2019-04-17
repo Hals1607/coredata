@@ -1,0 +1,101 @@
+
+
+import UIKit
+import CoreData
+
+class CoreDataServiceManager: NSObject {
+    
+    class func getContext() -> NSManagedObjectContext{
+        
+        let appdeleget = UIApplication.shared.delegate as! AppDelegate
+        return appdeleget.persistentContainer.viewContext
+    }
+    
+    class func storeEmployee(employeeDetail: [String:Any])
+    {
+        print(employeeDetail)
+        let context = getContext()
+        
+        let entity = NSEntityDescription.entity(forEntityName: "Student", in: context)
+        let manageObj = NSManagedObject(entity: entity!, insertInto: context)
+        manageObj.setValuesForKeys(employeeDetail)
+        print(manageObj)
+        
+        do{
+            try context.save()
+            print("saved.")
+        }catch{
+            print(error.localizedDescription)
+        }
+    }
+    
+    class func getEmployees() -> [Student]
+    {
+        var result = [Student]()
+        let fetchRequest: NSFetchRequest = Student.fetchRequest()
+        do{
+            result = try getContext().fetch(fetchRequest)
+        }catch{
+            print(error.localizedDescription)
+        }
+        return result
+    }
+    
+    class func getEmployeeBy(id: String) -> [Student]
+    {
+        var result = [Student]()
+        let fetchRequest: NSFetchRequest = Student.fetchRequest()
+        let predicate = NSPredicate(format: "s_emailid == %@","\(id)")
+        fetchRequest.predicate = predicate
+        do{
+            result = try getContext().fetch(fetchRequest)
+        }catch{
+            print(error.localizedDescription)
+        }
+        return result
+    }
+    
+    class func updateEmployee(id: NSManagedObjectID, dict: [String:Any]){
+        let context = getContext()
+        let sugerToUpdate = getById(id: id)
+        sugerToUpdate.setValuesForKeys(dict)
+        do{
+            try context.save()
+            print("Update.")
+        }catch{
+            print(error.localizedDescription)
+        }
+    }
+    
+    class func getById(id: NSManagedObjectID) -> NSManagedObject{
+        let context = getContext()
+        return context.object(with: id)
+    }
+    
+    class func deleteEmployee(id: NSManagedObjectID){
+        let context = getContext()
+        let sugerToDelete = getById(id: id)
+        context.delete(sugerToDelete)
+        do{
+            try context.save()
+            print("saved.")
+        }catch{
+            print(error.localizedDescription)
+        }
+    }
+    
+    class func clearCoreData()
+    {
+        let fetchRequest:NSFetchRequest<Student> = Student.fetchRequest()
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
+        do{
+            print("deleting all elements")
+            try getContext().execute(deleteRequest)
+        }
+        catch
+        {
+            print("error in clear data = \(error.localizedDescription)")
+        }
+    }
+}
+
